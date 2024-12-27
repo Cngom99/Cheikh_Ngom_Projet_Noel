@@ -1,49 +1,37 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Liste des cours</title>
-    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
-    <style>
-        .btn-modifier {
-            background-color: yellow;
-            color: black;
-        }
-        .btn-supprimer {
-            background-color: red;
-            color: white;
-        }
-    </style>
-</head>
-<body>
-<div class="container mt-5">
-    <h1 class="mb-4">Liste des cours</h1>
-    <a href="index.php?controller=cours&action=create" class="btn btn-ajouter mb-3">Ajouter un cours</a>
-    <table class="table table-bordered">
-        <thead>
-        <tr>
-            <th>ID</th>
-            <th>Nom</th>
-            <th>Code</th>
-            <th>Heures</th>
-            <th>Actions</th>
-        </tr>
-        </thead>
-        <tbody>
-        <?php foreach ($cours as $cours): ?>
+<h2>Liste des Cours</h2>
+<a href="?page=cours&action=create" class="btn btn-ajouter mb-3">Ajouter un cours</a>
+
+<table class="table table-bordered">
+    <thead class="thead-dark">
+    <tr>
+        <th>ID</th>
+        <th>Heures</th>
+        <th>Nom</th>
+        <th>Code</th>
+        <th>Actions</th>
+    </tr>
+    </thead>
+    <tbody>
+    <?php
+    if($cours) {
+        while($row = pg_fetch_assoc($cours)) {
+            ?>
             <tr>
-                <td><?= $cours['id'] ?></td>
-                <td><?= $cours['nom'] ?></td>
-                <td><?= $cours['code'] ?></td>
-                <td><?= $cours['heures'] ?></td>
+                <td><?php echo htmlspecialchars($row['id']); ?></td>
+                <td><?php echo htmlspecialchars($row['heures']); ?></td>
+                <td><?php echo htmlspecialchars($row['nom']); ?></td>
+                <td><?php echo htmlspecialchars($row['code']); ?></td>
                 <td>
-                    <a href="index.php?controller=cours&action=edit&id=<?= $cours['id'] ?>" class="btn btn-modifier">Modifier</a>
-                    <a href="index.php?controller=cours&action=delete&id=<?= $cours['id'] ?>" class="btn btn-supprimer">Supprimer</a>
+                    <a href="?page=cours&action=show&id=<?php echo $row['id']; ?>" class="btn btn-voir btn-sm">Voir</a>
+                    <a href="?page=cours&action=edit&id=<?php echo $row['id']; ?>" class="btn btn-modifier btn-sm">Modifier</a>
+                    <a href="?page=cours&action=delete&id=<?php echo $row['id']; ?>"
+                       class="btn btn-supprimer btn-sm"
+                       onclick="return confirm('Êtes-vous sûr de vouloir supprimer ce cours ?')">Supprimer</a>
                 </td>
             </tr>
-        <?php endforeach; ?>
-        </tbody>
-    </table>
-</div>
-</body>
-</html>
+            <?php
+        }
+    }
+    ?>
+    </tbody>
+</table>

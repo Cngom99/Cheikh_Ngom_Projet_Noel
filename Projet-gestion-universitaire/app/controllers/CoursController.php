@@ -1,34 +1,54 @@
 <?php
-require_once __DIR__ . '/../models/Cours.php';
+require_once '../app/models/Cours.php';
 
-class CoursController {
-    public function index() {
-        $cours = Cours::all();
-        require_once __DIR__ . '/../views/cours/index.php';
-    }
+if(isset($_GET['action'])) {
+    $action = $_GET['action'];
+    switch($action) {
+        case 'create':
+            if($_SERVER['REQUEST_METHOD'] == 'POST') {
+                $nom_cours = $_POST['nom_cours'];
+                $code_cours = $_POST['code_cours'];
+                $nombre_heures = $_POST['nombre_heures'];
 
-    public function create() {
-        require_once __DIR__ . '/../views/cours/create.php';
-    }
+                if(createCours($nom_cours, $code_cours, $nombre_heures)) {
+                    header('Location: cours.php');
+                }
+            }
+            require '../app/views/cours/create.php';
+            break;
 
-    public function store($data) {
-        Cours::create($data);
-        header('Location: index.php?controller=cours&action=index');
-    }
+        case 'edit':
+            $id = $_GET['id'];
+            if($_SERVER['REQUEST_METHOD'] == 'POST') {
+                $nom_cours = $_POST['nom_cours'];
+                $code_cours = $_POST['code_cours'];
+                $nombre_heures = $_POST['nombre_heures'];
 
-    public function edit($id) {
-        $cours = Cours::find($id);
-        require_once __DIR__ . '/../views/cours/edit.php';
-    }
+                if(updateCours($id, $nom_cours, $code_cours, $nombre_heures)) {
+                    header('Location: cours.php');
+                }
+            }
+            $cours = pg_fetch_assoc(getCoursById($id));
+            require '../app/views/cours/edit.php';
+            break;
 
-    public function update($id, $data) {
-        Cours::update($id, $data);
-        header('Location: index.php?controller=cours&action=index');
-    }
+        case 'delete':
+            $id = $_GET['id'];
+            if(deleteCours($id)) {
+                header('Location: cours.php');
+            }
+            break;
 
-    public function delete($id) {
-        Cours::delete($id);
-        header('Location: index.php?controller=cours&action=index');
+        case 'show':
+            $id = $_GET['id'];
+            $cours = pg_fetch_assoc(getCoursById($id));
+            require '../app/views/cours/show.php';
+            break;
+
+        default:
+            $cours = getAllCours();
+            require '../app/views/cours/index.php';
+            break;
     }
 }
 ?>

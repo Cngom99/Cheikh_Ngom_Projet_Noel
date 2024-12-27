@@ -1,38 +1,23 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Modifier un étudiant</title>
-    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
-    <style>
-        .btn-modifier {
-            background-color: yellow;
-            color: black;
-        }
-    </style>
-</head>
-<body>
-<div class="container mt-5">
-    <h1 class="mb-4">Modifier un étudiant</h1>
-    <form action="index.php?controller=etudiant&action=update&id=<?= $etudiant['id'] ?>" method="post">
+<div class="container">
+    <h2>Modifier l'étudiant</h2>
+    <form action="?action=edit&id=<?php echo $etudiant['id']; ?>" method="POST" class="needs-validation" novalidate>
         <div class="form-group">
-            <label for="nom">Nom:</label>
-            <input type="text" id="nom" name="nom" class="form-control" value="<?= $etudiant['nom'] ?>" required>
+            <label for="nom">Nom</label>
+            <input type="text" class="form-control" id="nom" name="nom" value="<?php echo htmlspecialchars($etudiant['nom']); ?>" required>
         </div>
         <div class="form-group">
-            <label for="prenom">Prénom:</label>
-            <input type="text" id="prenom" name="prenom" class="form-control" value="<?= $etudiant['prenom'] ?>" required>
+            <label for="prenom">Prénom</label>
+            <input type="text" class="form-control" id="prenom" name="prenom" value="<?php echo htmlspecialchars($etudiant['prenom']); ?>" required>
         </div>
         <div class="form-group">
-            <label for="email">Email:</label>
-            <input type="email" id="email" name="email" class="form-control" value="<?= $etudiant['email'] ?>" required>
+            <label for="email">Email</label>
+            <input type="email" class="form-control" id="email" name="email" value="<?php echo htmlspecialchars($etudiant['email']); ?>" required>
         </div>
         <div class="form-group">
-            <label for="filiere">Filière:</label>
-            <input type="text" id="filiere" name="filiere" class="form-control" value="<?= $etudiant['filiere'] ?>" required>
+            <label for="filiere">Filière</label>
+            <input type="text" class="form-control" id="filiere" name="filiere" value="<?php echo htmlspecialchars($etudiant['filiere']); ?>" required>
         </div>
-        <button type="submit" class="btn btn-modifier">Modifier</button>
+        <button type="submit" class="btn btn-modifier">Mettre à jour</button>
+        <a href="index.php" class="btn btn-secondary">Annuler</a>
     </form>
 </div>
-</body>
-</html>

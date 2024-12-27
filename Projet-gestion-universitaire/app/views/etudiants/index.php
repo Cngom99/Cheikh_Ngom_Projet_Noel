@@ -1,51 +1,31 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Liste des étudiants</title>
-    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
-    <style>
-        .btn-modifier {
-            background-color: yellow;
-            color: black;
-        }
-        .btn-supprimer {
-            background-color: red;
-            color: white;
-        }
-    </style>
-</head>
-<body>
-<div class="container mt-5">
-    <h1 class="mb-4">Liste des étudiants</h1>
-    <a href="index.php?controller=etudiant&action=create" class="btn btn-ajouter mb-3">Ajouter un étudiant</a>
-    <table class="table table-bordered">
-        <thead>
+<h2>Liste des Étudiants</h2>
+<a href="?action=create" class="btn btn-ajouter mb-3">Ajouter un étudiant</a>
+
+<table class="table table-bordered table-striped">
+    <thead class="thead-dark">
+    <tr>
+        <th>ID</th>
+        <th>Nom</th>
+        <th>Prénom</th>
+        <th>Email</th>
+        <th>Filière</th>
+        <th>Actions</th>
+    </tr>
+    </thead>
+    <tbody>
+    <?php while ($etudiant = pg_fetch_assoc($etudiants)) : ?>
         <tr>
-            <th>ID</th>
-            <th>Nom</th>
-            <th>Prénom</th>
-            <th>Email</th>
-            <th>Filière</th>
-            <th>Actions</th>
+            <td><?php echo htmlspecialchars($etudiant['id']); ?></td>
+            <td><?php echo htmlspecialchars($etudiant['nom']); ?></td>
+            <td><?php echo htmlspecialchars($etudiant['prenom']); ?></td>
+            <td><?php echo htmlspecialchars($etudiant['email']); ?></td>
+            <td><?php echo htmlspecialchars($etudiant['filiere']); ?></td>
+            <td>
+                <a href="?action=show&id=<?php echo $etudiant['id']; ?>" class="btn btn-voir btn-sm">Voir</a>
+                <a href="?action=edit&id=<?php echo $etudiant['id']; ?>" class="btn btn-modifier btn-sm">Modifier</a>
+                <a href="?action=delete&id=<?php echo $etudiant['id']; ?>" class="btn btn-supprimer btn-sm" onclick="return confirm('Êtes-vous sûr de vouloir supprimer cet étudiant ?')">Supprimer</a>
+            </td>
         </tr>
-        </thead>
-        <tbody>
-        <?php foreach ($etudiants as $etudiant): ?>
-            <tr>
-                <td><?= $etudiant['id'] ?></td>
-                <td><?= $etudiant['nom'] ?></td>
-                <td><?= $etudiant['prenom'] ?></td>
-                <td><?= $etudiant['email'] ?></td>
-                <td><?= $etudiant['filiere'] ?></td>
-                <td>
-                    <a href="index.php?controller=etudiant&action=edit&id=<?= $etudiant['id'] ?>" class="btn btn-modifier">Modifier</a>
-                    <a href="index.php?controller=etudiant&action=delete&id=<?= $etudiant['id'] ?>" class="btn btn-supprimer">Supprimer</a>
-                </td>
-            </tr>
-        <?php endforeach; ?>
-        </tbody>
-    </table>
-</div>
-</body>
-</html>
+    <?php endwhile; ?>
+    </tbody>
+</table>

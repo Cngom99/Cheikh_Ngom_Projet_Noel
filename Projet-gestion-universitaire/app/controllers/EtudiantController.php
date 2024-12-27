@@ -1,34 +1,56 @@
 <?php
-require_once __DIR__ . '/../models/Etudiant.php';
+require_once '../app/models/Etudiant.php';
 
-class EtudiantController {
-    public function index() {
-        $etudiants = Etudiant::all();
-        require_once __DIR__ . '/../views/etudiants/index.php';
-    }
+if(isset($_GET['action'])) {
+    $action = $_GET['action'];
+    switch($action) {
+        case 'create':
+            if($_SERVER['REQUEST_METHOD'] == 'POST') {
+                $nom = $_POST['nom'];
+                $prenom = $_POST['prenom'];
+                $email = $_POST['email'];
+                $filiere = $_POST['filiere'];
 
-    public function create() {
-        require_once __DIR__ . '/../views/etudiants/create.php';
-    }
+                if(createEtudiant($nom, $prenom, $email, $filiere)) {
+                    header('Location: index.php');
+                }
+            }
+            require '../app/views/etudiants/create.php';
+            break;
 
-    public function store($data) {
-        Etudiant::create($data);
-        header('Location: index.php?controller=etudiant&action=index');
-    }
+        case 'edit':
+            $id = $_GET['id'];
+            if($_SERVER['REQUEST_METHOD'] == 'POST') {
+                $nom = $_POST['nom'];
+                $prenom = $_POST['prenom'];
+                $email = $_POST['email'];
+                $filiere = $_POST['filiere'];
 
-    public function edit($id) {
-        $etudiant = Etudiant::find($id);
-        require_once __DIR__ . '/../views/etudiants/edit.php';
-    }
+                if(updateEtudiant($id, $nom, $prenom, $email, $filiere)) {
+                    header('Location: index.php');
+                }
+            }
+            $etudiant = pg_fetch_assoc(getEtudiantById($id));
+            require '../app/views/etudiants/edit.php';
+            break;
 
-    public function update($id, $data) {
-        Etudiant::update($id, $data);
-        header('Location: index.php?controller=etudiant&action=index');
-    }
+        case 'delete':
+            $id = $_GET['id'];
+            if(deleteEtudiant($id)) {
+                header('Location: index.php');
+            }
+            break;
 
-    public function delete($id) {
-        Etudiant::delete($id);
-        header('Location: index.php?controller=etudiant&action=index');
+        case 'show':
+            $id = $_GET['id'];
+            $etudiant = pg_fetch_assoc(getEtudiantById($id));
+            require '../app/views/etudiants/show.php';
+            break;
+
+        default:
+            $etudiants = getAllEtudiants();
+            require '../app/views/etudiants/index.php';
+            break;
     }
 }
 ?>

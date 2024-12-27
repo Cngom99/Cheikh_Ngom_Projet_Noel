@@ -1,34 +1,20 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Modifier un cours</title>
-    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
-    <style>
-        .btn-modifier {
-            background-color: yellow;
-            color: black;
-        }
-    </style>
-</head>
-<body>
-<div class="container mt-5">
-    <h1 class="mb-4">Modifier un cours</h1>
-    <form action="index.php?controller=cours&action=update&id=<?= $cours['id'] ?>" method="post">
-        <div class="form-group">
-            <label for="nom">Nom:</label>
-            <input type="text" id="nom" name="nom" class="form-control" value="<?= $cours['nom'] ?>" required>
-        </div>
-        <div class="form-group">
-            <label for="code">Code:</label>
-            <input type="text" id="code" name="code" class="form-control" value="<?= $cours['code'] ?>" required>
-        </div>
-        <div class="form-group">
-            <label for="heures">Heures:</label>
-            <input type="number" id="heures" name="heures" class="form-control" value="<?= $cours['heures'] ?>" required>
-        </div>
-        <button type="submit" class="btn btn-modifier">Modifier</button>
-    </form>
-</div>
-</body>
-</html>
+<h2>Modifier le cours</h2>
+<form action="?page=cours&action=edit&id=<?php echo $cours_unique['id']; ?>" method="POST">
+    <div class="form-group">
+        <label for="heures">Heures</label>
+        <input type="number" class="form-control" id="heures" name="heures"
+               value="<?php echo htmlspecialchars($cours_unique['heures']); ?>" required>
+    </div>
+    <div class="form-group">
+        <label for="nom">Nom</label>
+        <input type="text" class="form-control" id="nom" name="nom"
+               value="<?php echo htmlspecialchars($cours_unique['nom']); ?>" required>
+    </div>
+    <div class="form-group">
+        <label for="code">Code</label>
+        <input type="text" class="form-control" id="code" name="code"
+               value="<?php echo htmlspecialchars($cours_unique['code']); ?>" required>
+    </div>
+    <button type="submit" class="btn btn-modifier">Mettre à jour</button>
+    <a href="?page=cours" class="btn btn-secondary">Annuler</a>
+</form>
